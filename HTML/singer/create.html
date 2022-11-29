@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+            integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="../lib/sweetalert2.css">
+</head>
+<body>
+<div>
+    <a href="index.html"><button type="button" class="btn btn-success">
+        Back to Home page
+    </button></a>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Create
+    </button>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Form Create</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" id="name" class="form-control" aria-describedby="emailHelp" >
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Band</label>
+                        <input type="text" class="form-control" id="band" >
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <input type="text" class="form-control" id="description" >
+                    </div>
+                    <div class="mb-3">
+                        <label>image</label>
+                        <input type="file" value="upload" accept=".jpg" id="fileButton1">
+                        <div id="imgDiv"></div>
+                    </div>
+                    <div>
+
+                        <select id="idSong" >
+
+                        </select>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="create()" data-bs-dismiss="modal">Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel2">Form edit</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" id="nameUpdate" class="form-control" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Band</label>
+                        <input type="text" class="form-control" id="bandUpdate" >
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <input type="text" class="form-control" id="descriptionUpdate">
+                    </div>
+                    <div class="mb-3">
+                        <label>image</label>
+                        <input type="file" value="upload" accept=".jpg" id="fileButton2">
+                        <div id="imgDi"></div>
+                    </div>
+                    <div>
+                        <select id="idSongUpdate">
+
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="edit()" data-bs-dismiss="modal">Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Band</th>
+        <th scope="col">Description</th>
+        <th scope="col">Image</th>
+        <th scope="col">Song</th>
+        <th colspan="2">Action</th>
+    </tr>
+    </thead>
+    <tbody id="musics">
+    </tbody>
+</table>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+<script src="../lib/sweetalert2.all.js"></script>
+<script src="../lib/sweetalert2.js"></script>
+<script>
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-database.js"></script>
+<script>
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCtuz9NQaAm0UyZT2te9D2Xm4GCwFEhO50",
+        authDomain: "songs-c6273.firebaseapp.com",
+        projectId: "songs-c6273",
+        storageBucket: "songs-c6273.appspot.com",
+        messagingSenderId: "433424473799",
+        appId: "1:433424473799:web:544e44170b36c815bfe8e2",
+        measurementId: "G-T8B2LSZ5SV"
+    };
+    firebase.initializeApp(firebaseConfig);
+</script>
+
+<script type="text/javascript">
+    let image = '';
+    let fbBucketName = 'images';
+    let uploader = document.getElementById('uploader');
+    let fileButton1 = document.getElementById('fileButton1');
+    let fileButton2 = document.getElementById('fileButton2')
+
+    fileButton1.addEventListener('change', function (e) {
+        console.log('file upload event', e);
+        let file = e.target.files[0];
+        let storageRef = firebase.storage().ref(`${fbBucketName}/${file.name}`);
+        let uploadTask = storageRef.put(file);
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+            function (snapshot) {
+                let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                uploader.value = progress;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                    case firebase.storage.TaskState.PAUSED: // or 'paused'
+                        console.log('Upload is paused');
+                        break;
+                    case firebase.storage.TaskState.RUNNING: // or 'running'
+                        console.log('Upload is running');
+                        break;
+                }
+            }, function (error) {
+                switch (error.code) {
+                    case 'storage/unauthorized':
+                        break;
+
+                    case 'storage/canceled':
+                        break;
+
+                    case 'storage/unknown':
+                        break;
+                }
+            }, function () {
+                let downloadURL = uploadTask.snapshot.downloadURL;
+                localStorage.setItem('image1',downloadURL);
+            });
+
+    });
+    fileButton2.addEventListener('change', function (e) {
+        console.log('file upload event', e);
+        let file = e.target.files[0];
+        let storageRef = firebase.storage().ref(`${fbBucketName}/${file.name}`);
+        let uploadTask = storageRef.put(file);
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+            function (snapshot) {
+                let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                uploader.value = progress;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                    case firebase.storage.TaskState.PAUSED: // or 'paused'
+                        console.log('Upload is paused');
+                        break;
+                    case firebase.storage.TaskState.RUNNING: // or 'running'
+                        console.log('Upload is running');
+                        break;
+                }
+            }, function (error) {
+                switch (error.code) {
+                    case 'storage/unauthorized':
+                        break;
+
+                    case 'storage/canceled':
+                        break;
+
+                    case 'storage/unknown':
+                        break;
+                }
+            }, function () {
+                let downloadURL = uploadTask.snapshot.downloadURL;
+                localStorage.setItem('image1',downloadURL);
+            });
+
+    });
+
+
+
+
+
+
+    showAll();
+    findAllcategory();
+    find();
+    function showAll() {
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8080/musics',
+            success: (singers) => {
+                let htmlMusics = ``;
+                for (let i = 0; i < singers.length; i++) {
+
+                    htmlMusics += `<tr>
+                                <td>${i + 1}</td>
+                                <td>${singers[i].name}</td>
+                                <td>${singers[i].band}</td>
+                                <td>${singers[i].description}</td>
+                                <td><img src="${singers[i].image}"  style="width: 100px; height: 100px"></td>
+                                <td>${singers[i].chant.name}</td>
+                                <td><button onclick="showDelete('${singers[i]._id}')" class="btn btn-danger">Delete</button></td>
+                                <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" onclick="getIdEdit('${singers[i]._id}')">Edit</button></td>
+                            </tr>`
+
+                }
+
+                $('#musics').html(htmlMusics);
+            }
+        })
+    }
+
+
+    function findAllcategory() {
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8080/categories',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            success: (chants) => {
+                let htmlCategories = '';
+                for (let i = 0; i < chants.length; i++) {
+                    htmlCategories += `<option value="${chants[i]._id}" name="idSong">${chants[i].name}</option>`
+                }
+                console.log(chants)
+                $('#idSong').html(htmlCategories);
+            }
+        })
+    }
+    function create() {
+        let name = $('#name').val();
+        let band = $('#band').val();
+        let description = $('#description').val();
+        let image = localStorage.getItem('image1');
+        let chant = $('#idSong').val();
+        let music = {
+            name: name,
+            band: band,
+            description: description,
+            image: image,
+            chant : {_id:chant}
+        }
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:8080/musics',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(music),
+            success: () => {
+                showAll()
+                resetFormCreate()
+            }
+        })
+    }
+
+
+    function resetFormCreate() {
+        $('#name').val('');
+        $('#band').val('')
+        $('#description').val('');
+        $('#image').val('');
+        $('#idSong').val();
+    }
+
+    function showDelete(id) {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'DELETE',
+                    url: 'http://localhost:8080/musics/' + id,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    success: () => {
+                        showAll()
+                    }
+                })
+                swalWithBootstrapButtons.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelled',
+                    'Your imaginary file is safe :)',
+                    'error'
+                )
+            }
+        })
+    }
+    function find() {
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8080/categories',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            success: (chants) => {
+                let htmlCategories = '';
+                for (let i = 0; i < chants.length; i++) {
+                    htmlCategories += `<option value="${chants[i]._id}" name="idSongUpdate">${chants[i].name}</option>`
+                }
+                console.log(chants)
+                $('#idSongUpdate').html(htmlCategories);
+            }
+        })
+    }
+    let editId;
+
+    function getIdEdit(id) {
+
+        $.ajax({
+            type: 'GET',
+            url: `http://localhost:8080/musics/${id}`,
+            success: (singers) => {
+                console.log(singers)
+                $('#nameUpdate').val(singers[0].name);
+                $('#bandUpdate').val(singers[0].band);
+                $('#descriptionUpdate').val(singers[0].description);
+                localStorage.getItem('image1');
+                $('#idSongUpdate').val()
+                editId = id;
+            }
+        })
+    }
+
+    function edit() {
+        let id = editId;
+        let name = $('#nameUpdate').val();
+        let band = $('#bandUpdate').val();
+        let description = $('#descriptionUpdate').val();
+        let image = localStorage.getItem('image1');
+        let chant = $('#idSongUpdate').val();
+        let music = {
+            name: name,
+            band: band,
+            description: description,
+            image: image,
+            chant : {_id:chant}
+        }
+        console.log(music)
+        $.ajax({
+            type: 'PUT',
+            url: `http://localhost:8080/musics/${id}`,
+            headers: {
+                'Content-type': 'application/json',
+            },
+            data: JSON.stringify(music),
+            success: () => {
+                showAll();
+            }
+        })
+    }
+
+
+
+</script>
+</body>
+</html>

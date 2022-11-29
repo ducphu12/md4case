@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+    <link rel="stylesheet" href="css,js/index.css">
+
+</head>
+<body>
+<div class="login-page">
+    <div class="form">
+        <h2>Login</h2>
+            <input type="text" placeholder="username (> 6 character)" id="username" required/>
+            <input type="password" placeholder="password (6-8 character)" id="password" required/>
+            <button onclick="login()">login</button>
+            <p class="message">Not registered? <a href="./register.html">Create an account</a></p>
+    </div>
+</div>
+</body>
+<script>
+    function login() {
+        let username = $('#username').val();
+        let password = $('#password').val();
+        let user = {
+            username: username,
+            password: password
+        };
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:8080/user/login',
+            data: JSON.stringify(user),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            success: (token) => {
+                if (token.message){
+                    alert(token.message);
+                    reset();
+                }else {
+                    localStorage.setItem('token',token.token)
+                    localStorage.setItem('idUser',token.id)
+                    document.location.href="../index.html"
+                }
+            }
+        })
+
+    }
+    function reset() {
+      $('#username').val('');
+      $('#password').val('');
+    }
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="css,js/index.js"></script>
+
+</html>
+

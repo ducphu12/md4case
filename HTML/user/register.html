@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign up</title>
+    <link rel="stylesheet" href="css,js/index.css">
+</head>
+<body>
+<div class="login-page">
+    <div class="form">
+        <h2>Sign up</h2>
+        <input type="text" placeholder="username (> 6 character)" id="usernameR" required/>
+        <input type="password" placeholder="password (6-8 character)" id="passwordR" required/>
+        <input type="number" placeholder="phone number (10 character)" id="phoneNumber" required/>
+        <button onclick="register()">Create</button>
+        <p class="message">Already have an account? <a href="./login.html ">Login here</a></p>
+    </div>
+</div>
+<script>
+    function register() {
+        let username = $('#usernameR').val();
+        let password = $('#passwordR').val();
+        let phoneNumber = $('#phoneNumber').val();
+        let user = {
+            username: username,
+            password: password,
+            phoneNumber: phoneNumber
+
+        };
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:8080/user/register',
+            data: JSON.stringify(user),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            success: (dataUser) => {
+                if (dataUser.message) {
+                    alert(dataUser.message)
+                    resetRG();
+                } else {
+                    alert('Create success');
+                    resetRG();
+                    document.location.href="login.html"
+
+                }
+            }
+        })
+    }
+
+    function resetRG() {
+        $('#usernameR').val('');
+        $('#passwordR').val('');
+        $('#phoneNumber').val('');
+    }
+
+</script>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="css,js/index.js"></script>
+
+
+</html>
+
